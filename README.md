@@ -7,6 +7,8 @@ a compound with parallel linear and nonlinear elimination](https://bpspubs.onlin
 
 2) [A model for the turnover of dihydrotestosterone in the presence of the irreversible 5a-reductase inhibitors G1198745 and finasteride](https://sci-hub.st/10.1016/s0009-9236(98)90054-6)
 
+It uses the systems of differential equations provided by the authors to predict what the next values will be by employing numerical integration techniques. A timestep of 36 seconds (0.01 hours) ensures the accuracy and stability of the simulation.
+
 This model is based on population averages. It will not exactly predict values for individuals because every person's body is different. The predictions provided by this application should not be used as a basis for making medical decisions. Do not modify your dosage or alter your dosing schedule based on the information from this application. Always consult your doctor before making any changes to your medication regimen.
 
 # Installing
