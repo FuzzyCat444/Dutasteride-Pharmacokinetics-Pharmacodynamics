@@ -44,3 +44,8 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 |                 |   |                      |  |                      |
 | --------------- | - | -------------------- |- | -------------------- |
 | [0.5, 1d] x 6mo | = | [0.125, 6h] x 6mo |  = | [0.02083, 1h] x 6mo |
+
+# Screenshots:
+
+### [0.5, 1d] x 90d
+![0.5 daily for 90 days](screenshots/[0.5, 1d] x 90d.png)
