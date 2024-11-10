@@ -48,4 +48,4 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 # Screenshots:
 
 ### [0.5, 1d] x 90d
-![0.5 daily for 90 days]([screenshots/[0.5, 1d] x 90d.png](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/%5B0.5,%201d%5D%20x%2090d.png?raw=true))
+![0.5 daily for 90 days](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/%5B0.5,%201d%5D%20x%2090d.png?raw=true)
