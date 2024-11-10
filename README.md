@@ -13,7 +13,7 @@ This model is based on population averages. It will not exactly predict values f
 
 # Installing
 
-You either download the Windows prebuilt executable and simply open it, or you can download the python script and run it manually. If you use the script, you will need Python installed, as well as the NumPy and mplcursors packages. You can then open a console and type:
+You can either download the Windows prebuilt executable and simply open it, or you can download the python script and run it manually. If you use the script, you will need Python installed, as well as the NumPy and mplcursors packages. You can then open a console and type:
 
 ```
 python dutasteride_modeling.py
