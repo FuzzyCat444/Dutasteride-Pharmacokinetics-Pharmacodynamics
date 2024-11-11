@@ -11,6 +11,8 @@ It uses the systems of differential equations provided by the authors to predict
 
 This model is based on population averages. It will not exactly predict values for individuals because every person's body is different. The predictions provided by this application should not be used as a basis for making medical decisions. Do not modify your dosage or alter your dosing schedule based on the information from this application. Always consult your doctor before making any changes to your medication regimen.
 
+Note: The Scalp DHT Suppression (%) plot is my own addition based on paper #2 as well as the Olsen et al. study (not listed) on scalp DHT reduction. This scalp DHT plot shows *projected* scalp DHT suppression if the *current* dutasteride blood concentration stayed constant over time. It does not represent real-time scalp DHT suppression but predicts what those levels would look like at steady-state serum dutasteride concentration. Only when the dutasteride serum concentration stabilizes (plateaus) can you interpret these values as true scalp DHT suppression. There was no data available that modeled the rate of clearance of DHT from scalp skin, so it is not known exactly how long it takes for scalp DHT to reflect serum dutasteride levels. At low doses of dutasteride (< 0.5 mg/day), there is likely to be higher person-to-person variation for scalp DHT suppression. Take this prediction with a grain of salt.
+
 # Installing
 
 You can either download the Windows prebuilt executable and simply open it, or you can download the python script and run it manually. If you use the script, you will need Python installed, as well as the NumPy and mplcursors packages. You can then open a console and type:
