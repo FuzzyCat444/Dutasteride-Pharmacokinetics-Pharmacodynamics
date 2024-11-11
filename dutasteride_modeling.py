@@ -6,8 +6,6 @@ from matplotlib.widgets import CheckButtons
 from matplotlib.ticker import MaxNLocator
 from matplotlib.transforms import Bbox
 
-from decimal import *
-
 import os
 os.system('mode con: cols=170 lines=30')
 
