@@ -6,6 +6,8 @@ from matplotlib.widgets import CheckButtons
 from matplotlib.ticker import MaxNLocator
 from matplotlib.transforms import Bbox
 
+from decimal import *
+
 import os
 os.system('mode con: cols=170 lines=30')
 
@@ -248,6 +250,10 @@ def computeDerivatives(comp, const, useSecondOrder):
     comp.dDHT = const.k_out * const.DHT_ss * const.FAR_2 * comp.S5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * comp.S5AR1 - const.k_out * comp.DHT
     comp.dS5AR1 = const.k_1 - const.k_1 * comp.S5AR1 - const.ko_1 * comp.A_4 * comp.S5AR1
     comp.dS5AR2 = const.k_2 - const.k_2 * comp.S5AR2 - const.ko_2 * comp.A_4 * comp.S5AR2
+    max_dS5AR1 = comp.S5AR1 * 100
+    max_dS5AR2 = comp.S5AR2 * 100
+    comp.dS5AR1 = max(-max_dS5AR1, min(max_dS5AR1, comp.dS5AR1))
+    comp.dS5AR2 = max(-max_dS5AR2, min(max_dS5AR2, comp.dS5AR2))
     
     if useSecondOrder:
         # Second derivatives
