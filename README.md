@@ -47,5 +47,11 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 
 # Screenshots:
 
-### [0.5, 1d] x 90d
-![0.5 daily for 90 days](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/%5B0.5,%201d%5D%20x%2090d.png?raw=true)
+### [0.5, 1d] x 90d:
+![screenshot 1](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/%5B0.5,%201d%5D%20x%2090d.png?raw=true)
+
+### [2.5, 1w] x 0.5y, [0.5, 1d] x 0.5y:
+![screenshot 2](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/%5B2.5,%201w%5D%20x%200.5y,%20%5B0.5,%201d%5D%20x%200.5y.png?raw=true)
+
+### [0.5, 1d] x 1mo, [1, 1d] x 1mo, [1.5, 1d] x 1mo, [2, 1d] x 1mo:
+![screenshot 3](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/%5B0.5,%201d%5D%20x%201mo,%20%5B1,%201d%5D%20x%201mo,%20%5B1.5,%201d%5D%20x%201mo,%20%5B2,%201d%5D%20x%201mo.png?raw=true)
