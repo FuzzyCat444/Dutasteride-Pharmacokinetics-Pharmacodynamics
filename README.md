@@ -23,7 +23,7 @@ You will need to use the console to enter dosing schedules.
 
 # How to Use
 
-Dosing schedules are entered into the console when the program is running. Once the graph is produced and a window opens to display it, the window may then be closed and the user will be prompted to enter another dosing schedule. Type 'q' to quit the program.
+Dosing schedules are entered into the console when the program is running. Once the graph is produced and a window opens to display it, the window may then be closed and the user will be prompted to enter another dosing schedule. Type 'q' to quit the program. Make sure to try the pan and zoom tools at the bottom left of the graph; you can click and drag using both the left and right mouse buttons for different effects. The home icon will reset the view.
 
 ### Format Examples:
 
