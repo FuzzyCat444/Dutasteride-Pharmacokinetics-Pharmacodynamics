@@ -62,7 +62,7 @@ class Compartments:
         self.dS5AR2 = 0
         self.d2S5AR1 = 0
         self.d2S5AR2 = 0
-        self.d2S5AR_calculated = False
+        self.dS5AR_calculated = False
         
     def administer(self, mg):
         self.A_1 += mg * 1000
@@ -275,7 +275,7 @@ def computeDerivatives(comp, const, useSecondOrder):
             comp.S5AR2 += comp.dS5AR2 * _dt2
             
             A_4 += dA_4 * _dt
-            comp.d2S5AR_calculated = True
+            comp.dS5AR_calculated = True
     
     if useSecondOrder:
         # Second derivatives
@@ -286,7 +286,7 @@ def computeDerivatives(comp, const, useSecondOrder):
             
         comp.d2A_3 = const.k_23 * comp.dA_2 - const.k_32 * comp.dA_3
     
-        if not comp.d2S5AR_calculated:
+        if not comp.dS5AR_calculated:
             comp.d2DHT = const.k_out * const.DHT_ss * const.FAR_2 * comp.dS5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * comp.dS5AR1 - const.k_out * comp.dDHT
             comp.d2S5AR1 = -const.k_1 * comp.dS5AR1 - const.ko_1 * (comp.A_4 * comp.dS5AR1 + comp.dA_2 / const.V_c * comp.S5AR1)
             comp.d2S5AR2 = -const.k_2 * comp.dS5AR2 - const.ko_2 * (comp.A_4 * comp.dS5AR2 + comp.dA_2 / const.V_c * comp.S5AR2)
@@ -300,7 +300,7 @@ def predictNextCompartmentValues(comp, const, useSecondOrder):
     comp.A_4 = comp.A_2 / const.V_c
     
     
-    if not comp.d2S5AR_calculated:
+    if not comp.dS5AR_calculated:
         comp.DHT += comp.dDHT * const.dt
         comp.S5AR1 += comp.dS5AR1 * const.dt
         comp.S5AR2 += comp.dS5AR2 * const.dt
@@ -310,12 +310,12 @@ def predictNextCompartmentValues(comp, const, useSecondOrder):
         comp.A_2 += comp.d2A_2 * const.dt2
         comp.A_3 += comp.d2A_3 * const.dt2
         
-        if not comp.d2S5AR_calculated:
+        if not comp.dS5AR_calculated:
             comp.DHT += comp.d2DHT * const.dt2
             comp.S5AR1 += comp.d2S5AR1 * const.dt2
             comp.S5AR2 += comp.d2S5AR2 * const.dt2
         
-    comp.d2S5AR_calculated = False
+    comp.dS5AR_calculated = False
     comp.DHTp = 100 * (1 - comp.DHT / const.DHT_ss)
     comp.scalpDHTp = 100 * (1 - scalpDHTReduction(comp))
         
