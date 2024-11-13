@@ -5,7 +5,7 @@ Dutasteride is a medication used to treat BPH and male pattern hair loss by lowe
 1) [The pharmacokinetic modelling of GI198745 (dutasteride),
 a compound with parallel linear and nonlinear elimination](https://bpspubs.onlinelibrary.wiley.com/doi/epdf/10.1046/j.1365-2125.1999.00843.x)
 
-2) [A model for the turnover of dihydrotestosterone in the presence of the irreversible 5a-reductase inhibitors G1198745 and finasteride](https://sci-hub.st/10.1016/s0009-9236(98)90054-6)
+2) [A model for the turnover of dihydrotestosterone in the presence of the irreversible 5a-reductase inhibitors G1198745 and finasteride](https://csclub.uwaterloo.ca/~pbarfuss/gisleskog1998.pdf)
 
 It uses the systems of differential equations provided by the authors to predict what the next values will be by employing numerical integration techniques. A timestep of 0.01 hours (36 seconds) ensures the accuracy and stability of the simulation.
 
