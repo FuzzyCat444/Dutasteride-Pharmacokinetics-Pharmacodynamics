@@ -3,7 +3,7 @@
 Dutasteride is a medication used to treat BPH and male pattern hair loss by lowering levels of the hormone dihydrotestosterone (DHT) in the body. It does this by competitively and irreversibly binding to the type 1 and type 2 5-alpha-reductase isoenzymes. This repository includes a single python script which predicts dutasteride levels in blood over time, DHT levels in blood over time, and scalp DHT levels at steady-state when dutaseride is taken orally. This simulation is entirely based on two papers, both by Gisleskog et al.:
 
 1) [The pharmacokinetic modelling of GI198745 (dutasteride),
-a compound with parallel linear and nonlinear elimination](https://bpspubs.onlinelibrary.wiley.com/doi/epdf/10.1046/j.1365-2125.1999.00843.x)
+a compound with parallel linear and nonlinear elimination](https://pmc.ncbi.nlm.nih.gov/articles/PMC2014202/pdf/bcp0047-0053.pdf)
 
 2) [A model for the turnover of dihydrotestosterone in the presence of the irreversible 5a-reductase inhibitors G1198745 and finasteride](https://csclub.uwaterloo.ca/~pbarfuss/gisleskog1998.pdf)
 
