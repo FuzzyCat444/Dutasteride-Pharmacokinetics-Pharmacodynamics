@@ -1,17 +1,20 @@
 # Introduction
 
-Dutasteride is a medication used to treat BPH and male pattern hair loss by lowering levels of the hormone dihydrotestosterone (DHT) in the body. It does this by competitively and irreversibly binding to the type 1 and type 2 5-alpha-reductase isoenzymes. This repository includes a single python script which predicts dutasteride levels in blood over time, DHT levels in blood over time, and scalp DHT levels at steady-state when dutaseride is taken orally. This simulation is entirely based on two papers, both by Gisleskog et al.:
+Dutasteride is a medication used to treat BPH and male pattern hair loss by lowering levels of the hormone dihydrotestosterone (DHT) in the body. It does this by competitively and irreversibly binding to the type 1 and type 2 5-alpha-reductase isoenzymes. This repository includes a single python script which predicts dutasteride levels in blood over time, DHT levels in blood over time, and scalp DHT levels at steady-state when dutaseride is taken orally. This simulation is entirely based on two papers:
 
-1) [The pharmacokinetic modelling of GI198745 (dutasteride),
-a compound with parallel linear and nonlinear elimination](https://pmc.ncbi.nlm.nih.gov/articles/PMC2014202/pdf/bcp0047-0053.pdf)
+1) Gisleskog, P. O., Hermann, D., Hammarlund-Udenaes, M., Karlsson., M. O. (2001). The pharmacokinetic modelling of GI198745 (dutasteride),
+a compound with parallel linear and nonlinear elimination. British Journal of Clinical Pharmacology. https://doi.org/10.1046/j.1365-2125.1999.00843.x
 
-2) [A model for the turnover of dihydrotestosterone in the presence of the irreversible 5a-reductase inhibitors G1198745 and finasteride](https://csclub.uwaterloo.ca/~pbarfuss/gisleskog1998.pdf)
+2) Gisleskog, P. O., Hermann, D., Hammarlund-Udenaes, M., Karlsson., M. O. (1998). A model for the turnover of dihydrotestosterone in the presence of the irreversible 5a-reductase inhibitors G1198745 and finasteride. Clinical Pharmacology and Therapeutics. https://doi.org/10.1016/S0009-9236(98)90054-6
 
 It uses the systems of differential equations provided by the authors to predict what the next values will be by employing numerical integration techniques. A timestep of 0.01 hours (36 seconds) ensures the accuracy and stability of the simulation.
 
 This model is based on population averages. It will not exactly predict values for individuals because every person's body is different. The predictions provided by this application should not be used as a basis for making medical decisions. Do not modify your dosage or alter your dosing schedule based on the information from this application. Always consult your doctor before making any changes to your medication regimen.
 
-Note: The Scalp DHT Suppression (%) plot is my own addition based on paper #2 as well as the Olsen et al. study (not listed) on scalp DHT reduction. This scalp DHT plot shows *projected* scalp DHT suppression if the *current* dutasteride blood concentration stayed constant over time. It does not represent real-time scalp DHT suppression but predicts what those levels would look like at steady-state serum dutasteride concentration. Only when the dutasteride serum concentration stabilizes (plateaus) can you interpret these values as true scalp DHT suppression. There was no data available that modeled the rate of clearance of DHT from scalp skin, so it is not known exactly how long it takes for scalp DHT to reflect serum dutasteride levels. At low doses of dutasteride (< 0.5 mg/day), there is likely to be higher person-to-person variation for scalp DHT suppression. Take this prediction with a grain of salt.
+Note: The Scalp DHT Suppression (%) plot is my own addition based on paper #2 as well as the Olsen et al. study on scalp DHT reduction. This scalp DHT plot shows *projected* scalp DHT suppression if the *current* dutasteride blood concentration stayed constant over time. It does not represent real-time scalp DHT suppression but predicts what those levels would look like at steady-state serum dutasteride concentration. Only when the dutasteride serum concentration stabilizes (plateaus) can you interpret these values as true scalp DHT suppression. There was no data available that modeled the rate of clearance of DHT from scalp skin, so it is not known exactly how long it takes for scalp DHT to reflect serum dutasteride levels. At low doses of dutasteride (< 0.5 mg/day), there is likely to be higher person-to-person variation for scalp DHT suppression. Take this prediction with a grain of salt.
+
+#### Scalp DHT Study:
+- Olsen, E. A., Hordinsky, M., Whiting, D., Stough, D., Hobbs, S., Ellis, M. L., Wilson, T., Rittmaster, R. S. (2006). The importance of dual 5alpha-reductase inhibition in the treatment of male pattern hair loss: results of a randomized placebo-controlled study of dutasteride versus finasteride. Journal of the American Academy of Dermatology. https://doi.org/10.1016/j.jaad.2006.05.007
 
 # Installing
 
