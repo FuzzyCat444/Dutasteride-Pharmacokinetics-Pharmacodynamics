@@ -419,7 +419,8 @@ while True:
     lineColors = [line.get_color() for line in lines]
     check = CheckButtons(ax=ax3, labels=lineLabels, actives=[True] * len(lines), label_props={'color': lineColors}, frame_props={'edgecolor': lineColors}, check_props={'facecolor': lineColors})
     for label in check.labels:
-        label.set_fontsize(10)
+        label.set_fontsize(12 / fig.dpi * 72)
+        label.set_fontname('DejaVu Sans')
 
     def on_xlims_change(event):
         bbox = ax1.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
