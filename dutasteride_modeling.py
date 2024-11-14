@@ -42,27 +42,12 @@ class Compartments:
         self.A_3 = 0
         self.A_4 = 0
         
-        self.dA_1 = 0
-        self.dA_2 = 0
-        self.dA_3 = 0
-        
-        self.d2A_1 = 0
-        self.d2A_2 = 0
-        self.d2A_3 = 0
-        
         self.DHT = const.DHT_ss
-        self.dDHT = 0
-        self.d2DHT = 0
         self.DHTp = 0
         self.scalpDHTp = 0
         
         self.S5AR1 = 1
         self.S5AR2 = 1
-        self.dS5AR1 = 0
-        self.dS5AR2 = 0
-        self.d2S5AR1 = 0
-        self.d2S5AR2 = 0
-        self.dS5AR_calculated = False
         
     def administer(self, mg):
         self.A_1 += mg * 1000
@@ -235,87 +220,71 @@ class Schedule:
         interval = intervals[indices[1] % len(intervals)]
         return interval[0]
         
-def computeDerivatives(comp, const, useSecondOrder):
-    # First derivatives
-    comp.dA_1 = -const.k_a * comp.A_1
-    
-    av = comp.A_2 / const.V_c
-    k23k20 = const.k_23 + const.k_20
-    kmav = const.K_m + av
-    comp.dA_2 = const.k_a * comp.A_1 - k23k20 * comp.A_2 + const.k_32 * comp.A_3 - const.V_max * av / kmav
-    
-    comp.dA_3 = const.k_23 * comp.A_2 - const.k_32 * comp.A_3
-    
+def predictNextCompartmentValues(comp, const, useSecondOrder):
+    N = 1
+    dt = const.dt
+    dt2 = const.dt2
+
     dS5AR1 = const.k_1 - const.k_1 * comp.S5AR1 - const.ko_1 * comp.A_4 * comp.S5AR1
     dS5AR2 = const.k_2 - const.k_2 * comp.S5AR2 - const.ko_2 * comp.A_4 * comp.S5AR2
-    if abs(dS5AR1) < comp.S5AR1 * 100 and abs(dS5AR2) < comp.S5AR2 * 100:
-        comp.dDHT = const.k_out * const.DHT_ss * const.FAR_2 * comp.S5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * comp.S5AR1 - const.k_out * comp.DHT
-        comp.dS5AR1 = dS5AR1
-        comp.dS5AR2 = dS5AR2
-    else:
+    if not (abs(dS5AR1) < comp.S5AR1 * 100 and abs(dS5AR2) < comp.S5AR2 * 100):
         N = 10
-        _dt = const.dt / N
-        _dt2 = 0.5 * _dt ** 2
-        A_4 = comp.A_4
-        dA_4 = comp.dA_2 / const.V_c
+        dt /= N
+        dt2 /= N * N
         
-        for i in range(N):
-            comp.dDHT = const.k_out * const.DHT_ss * const.FAR_2 * comp.S5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * comp.S5AR1 - const.k_out * comp.DHT
-            comp.dS5AR1 = const.k_1 - const.k_1 * comp.S5AR1 - const.ko_1 * A_4 * comp.S5AR1
-            comp.dS5AR2 = const.k_2 - const.k_2 * comp.S5AR2 - const.ko_2 * A_4 * comp.S5AR2
-            comp.d2DHT = const.k_out * const.DHT_ss * const.FAR_2 * comp.dS5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * comp.dS5AR1 - const.k_out * comp.dDHT
-            comp.d2S5AR1 = -const.k_1 * comp.dS5AR1 - const.ko_1 * (comp.A_4 * comp.dS5AR1 + comp.dA_2 / const.V_c * comp.S5AR1)
-            comp.d2S5AR2 = -const.k_2 * comp.dS5AR2 - const.ko_2 * (comp.A_4 * comp.dS5AR2 + comp.dA_2 / const.V_c * comp.S5AR2)
+    A_1 = comp.A_1
+    A_2 = comp.A_2
+    A_3 = comp.A_3
+    A_4 = comp.A_4
+    DHT = comp.DHT
+    S5AR1 = comp.S5AR1
+    S5AR2 = comp.S5AR2
+    
+    k23k20 = const.k_23 + const.k_20
+    for i in range(N):
+        vckma2 = const.V_c * const.K_m + A_2
+    
+        dA_1 = -const.k_a * A_1
+        dA_2 = const.k_a * A_1 - k23k20 * A_2 + const.k_32 * A_3 - const.V_max * A_2 / vckma2
+        dA_3 = const.k_23 * A_2 - const.k_32 * A_3
+        dA_4 = dA_2 / const.V_c
+        dDHT = const.k_out * const.DHT_ss * const.FAR_2 * S5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * S5AR1 - const.k_out * DHT
+        dS5AR1 = const.k_1 - const.k_1 * S5AR1 - const.ko_1 * A_4 * S5AR1
+        dS5AR2 = const.k_2 - const.k_2 * S5AR2 - const.ko_2 * A_4 * S5AR2
+        
+        d2A_1 = -const.k_a * dA_1
+        d2A_2 = const.k_a * dA_1 - k23k20 * dA_2 + const.k_32 * dA_3 - const.V_max * (vckma2 * dA_2 - A_2 * dA_2) / (vckma2 ** 2)
+        d2A_3 = const.k_23 * dA_2 - const.k_32 * dA_3
+        d2A_4 = d2A_2 / const.V_c
+        d2DHT = const.k_out * const.DHT_ss * const.FAR_2 * dS5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * dS5AR1 - const.k_out * dDHT
+        d2S5AR1 = -const.k_1 * dS5AR1 - const.ko_1 * (A_4 * dS5AR1 + dA_4 * S5AR1)
+        d2S5AR2 = -const.k_2 * dS5AR2 - const.ko_2 * (A_4 * dS5AR2 + dA_4 * S5AR2)
+        
+        A_1 += dA_1 * dt
+        A_2 += dA_2 * dt
+        A_3 += dA_3 * dt
+        A_4 += dA_4 * dt
+        DHT += dDHT * dt
+        S5AR1 += dS5AR1 * dt
+        S5AR2 += dS5AR2 * dt
+        
+        if useSecondOrder:
+            A_1 += d2A_1 * dt2
+            A_2 += d2A_2 * dt2
+            A_3 += d2A_3 * dt2
+            A_4 += d2A_4 * dt2
+            DHT += d2DHT * dt2
+            S5AR1 += d2S5AR1 * dt2
+            S5AR2 += d2S5AR2 * dt2
             
-            comp.DHT += comp.dDHT * _dt
-            comp.S5AR1 += comp.dS5AR1 * _dt
-            comp.S5AR2 += comp.dS5AR2 * _dt
-            comp.DHT += comp.dDHT * _dt2
-            comp.S5AR1 += comp.dS5AR1 * _dt2
-            comp.S5AR2 += comp.dS5AR2 * _dt2
-            
-            A_4 += dA_4 * _dt
-            comp.dS5AR_calculated = True
+    comp.A_1 = A_1
+    comp.A_2 = A_2
+    comp.A_3 = A_3
+    comp.A_4 = A_4
+    comp.DHT = DHT
+    comp.S5AR1 = S5AR1
+    comp.S5AR2 = S5AR2
     
-    if useSecondOrder:
-        # Second derivatives
-        comp.d2A_1 = -const.k_a * comp.dA_1
-        
-        vmaxvc = const.V_max / const.V_c
-        comp.d2A_2 = const.k_a * comp.dA_1 - k23k20 * comp.dA_2 + const.k_32 * comp.dA_3 - (kmav * vmaxvc * comp.dA_2 - vmaxvc * comp.A_2 * comp.dA_2 / const.V_c) / (kmav ** 2)
-            
-        comp.d2A_3 = const.k_23 * comp.dA_2 - const.k_32 * comp.dA_3
-    
-        if not comp.dS5AR_calculated:
-            comp.d2DHT = const.k_out * const.DHT_ss * const.FAR_2 * comp.dS5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * comp.dS5AR1 - const.k_out * comp.dDHT
-            comp.d2S5AR1 = -const.k_1 * comp.dS5AR1 - const.ko_1 * (comp.A_4 * comp.dS5AR1 + comp.dA_2 / const.V_c * comp.S5AR1)
-            comp.d2S5AR2 = -const.k_2 * comp.dS5AR2 - const.ko_2 * (comp.A_4 * comp.dS5AR2 + comp.dA_2 / const.V_c * comp.S5AR2)
-    
-def predictNextCompartmentValues(comp, const, useSecondOrder):
-    computeDerivatives(comp, const, useSecondOrder)    
-
-    comp.A_1 += comp.dA_1 * const.dt
-    comp.A_2 += comp.dA_2 * const.dt
-    comp.A_3 += comp.dA_3 * const.dt
-    comp.A_4 = comp.A_2 / const.V_c
-    
-    
-    if not comp.dS5AR_calculated:
-        comp.DHT += comp.dDHT * const.dt
-        comp.S5AR1 += comp.dS5AR1 * const.dt
-        comp.S5AR2 += comp.dS5AR2 * const.dt
-    
-    if useSecondOrder:
-        comp.A_1 += comp.d2A_1 * const.dt2
-        comp.A_2 += comp.d2A_2 * const.dt2
-        comp.A_3 += comp.d2A_3 * const.dt2
-        
-        if not comp.dS5AR_calculated:
-            comp.DHT += comp.d2DHT * const.dt2
-            comp.S5AR1 += comp.d2S5AR1 * const.dt2
-            comp.S5AR2 += comp.d2S5AR2 * const.dt2
-        
-    comp.dS5AR_calculated = False
     comp.DHTp = 100 * (1 - comp.DHT / const.DHT_ss)
     comp.scalpDHTp = 100 * (1 - scalpDHTReduction(comp))
         
