@@ -44,6 +44,7 @@ Note: Time units can be any of: h, d, w, mo, y (hours, days, weeks, months, year
 | [1, SaSuTuTh] x 6mo | 1 mg on Saturday Sunday Tuesday Thursday for 6 months.|
 | [0.5, 1d] x 1mo, [1, 1d] x 1mo, [1.5, 1d] x 1mo, [2, 1d] x 1mo | Increasing daily dose by 0.5 mg each month. |
 | [0.5, MTh] x 3mo, [0, 1d] x 3mo, [0.5, 3d] x 3mo | 0.5 mg on Monday Thursday for 3 months, then stop for 3 months, then 0.5 mg every 3 days for 3 months |
+| [[0.5, MWF]x3w, [0.5, MTh]x1w]x6mo | 0.5 mg on Monday Wednesday Friday for 3 weeks, then 0.5 mg on Monday Thursday for 1 week. Repeat this whole schedule for 6 months. |
 
 If you want a smoother graph, you can simply choose an equivalent dose but with more frequency:
 
