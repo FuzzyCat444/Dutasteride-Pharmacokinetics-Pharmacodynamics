@@ -5,9 +5,10 @@ from mplcursors import cursor
 from matplotlib.widgets import CheckButtons
 from matplotlib.ticker import MaxNLocator
 from matplotlib.transforms import Bbox
+import math
 
 import os
-os.system('mode con: cols=170 lines=30')
+os.system('mode con: cols=130 lines=30')
 
 class Constants:
     def __init__(self, dt):
@@ -61,165 +62,6 @@ class SimulationData:
         self.numSamples = 0
         self.totalSimTime = 0
         
-class Schedule:
-    def __init__(self, text):
-        self.dosingPattern = []
-        self.totalRunTime = 0
-        text = ''.join(text.split())
-        splitByComma = []
-        bracketDepth = 0
-        startI = 0
-        for i in range(len(text)):
-            ch = text[i]
-            if ch == '[':
-                bracketDepth += 1
-            elif ch == ']':
-                bracketDepth -= 1
-            elif ch == ',' and bracketDepth == 0:
-                if i > startI:
-                    splitByComma.append(text[startI:i])
-                startI = i + 1
-        if startI < len(text):
-            splitByComma.append(text[startI:])
-                    
-        if bracketDepth != 0:
-            return
-        
-        dosingPattern = []
-        daysOfWeek = ['Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa']
-        for commaSplit in splitByComma:
-            if commaSplit[0] != '[':
-                return
-            endI = 0
-            try:
-                endI = commaSplit.index(']')
-            except:
-                return
-            intervalStr = commaSplit[1:endI]
-                
-            totalTime = -1
-            if len(commaSplit) > endI + 2 and commaSplit[endI + 1] == 'x':
-                totalTime = self.parseTimeStringToHours(commaSplit[endI + 2:])
-                if totalTime == -1:
-                    return
-            
-            if len(intervalStr) == 0:
-                return
-                
-            intervalStrs = list(filter(None, intervalStr.split(',')))
-            
-            intervalsList = []
-            if len(intervalStrs) % 2 != 0:
-                return
-            
-            if len(intervalStrs) == 2 and any(x in intervalStrs[1] for x in daysOfWeek) and not any(ch.isdigit() for ch in intervalStrs[1]):
-                try:
-                    dose = float(intervalStrs[0])
-                except:
-                    return
-                
-                week = [dow in intervalStrs[1] for dow in daysOfWeek]
-                index = (week.index(True) + 1) % 7
-                week = week[index:] + week[:index]
-                wait = 0
-                for i in range(7):
-                    wait += 24
-                    if week[i]:
-                        intervalsList.append((dose, wait))
-                        wait = 0
-            else:
-                for i in range(len(intervalStrs) // 2):
-                    j = i * 2
-                    dose = 0
-                    try:
-                        dose = float(intervalStrs[j])
-                    except:
-                        return
-                    timeInterval = self.parseTimeStringToHours(intervalStrs[j + 1])
-                    if timeInterval == -1:
-                        return
-                    intervalsList.append((dose, timeInterval))
-            
-            
-            time = 0
-            for i in range(len(intervalsList)):
-                time += intervalsList[i][1]
-            if totalTime == -1:
-                totalTime = time
-            
-            dosingPattern.append((intervalsList, time, totalTime))
-            self.totalRunTime += totalTime
-        
-        self.dosingPattern = dosingPattern
-                
-                
-    def parseTimeStringToHours(self, string):
-        endI = len(string)
-        for i in range(len(string)):
-            ch = string[i]
-            if not (ch.isdigit() or ch == '.'):
-                endI = i
-                break
-        number = 0
-        try:
-            number = float(string[:endI])
-        except:
-            return -1
-                
-        unit = string[endI:]
-        if unit == 'd' or unit == '':
-            return number * 24
-        elif unit == 'w':
-            return number * 7 * 24
-        elif unit == 'mo':
-            return number * 30 * 24
-        elif unit == 'y':
-            return number * 365 * 24
-        elif unit == 'h':
-            return number
-        else:
-            return -1
-            
-    def indices(self, time):
-        if time < 0:
-            return None
-    
-        index1 = 0
-        startTime1 = 0
-        for i in range(len(self.dosingPattern)):
-            totalTime = self.dosingPattern[i][2]
-            if time < startTime1 + totalTime:
-                break
-            index1 += 1
-            startTime1 += totalTime
-            
-        if index1 == len(self.dosingPattern):
-            return None
-            
-        offsetTime = (time - startTime1) % self.dosingPattern[index1][1]
-        offsetIndex = int((time - startTime1) / self.dosingPattern[index1][1]) * len(self.dosingPattern[index1][0])
-        
-        index2 = 0
-        startTime2 = 0
-        for i in range(len(self.dosingPattern[index1][0])):
-            wait = self.dosingPattern[index1][0][i][1]
-            if offsetTime < startTime2 + wait:
-                break
-            index2 += 1
-            startTime2 += wait
-            
-        if index2 == len(self.dosingPattern[index1][0]):
-            index2 = 0
-            
-        return index1, offsetIndex + index2
-        
-    def doseAt(self, indices):
-        if indices == None:
-            return 0
-        intervals = self.dosingPattern[indices[0]][0]
-        interval = intervals[indices[1] % len(intervals)]
-        return interval[0]
-        
 def predictNextCompartmentValues(comp, const, useSecondOrder):
     N = 1
     dt = const.dt
@@ -252,14 +94,6 @@ def predictNextCompartmentValues(comp, const, useSecondOrder):
         dS5AR1 = const.k_1 - const.k_1 * S5AR1 - const.ko_1 * A_4 * S5AR1
         dS5AR2 = const.k_2 - const.k_2 * S5AR2 - const.ko_2 * A_4 * S5AR2
         
-        d2A_1 = -const.k_a * dA_1
-        d2A_2 = const.k_a * dA_1 - k23k20 * dA_2 + const.k_32 * dA_3 - const.V_max * (vckma2 * dA_2 - A_2 * dA_2) / (vckma2 ** 2)
-        d2A_3 = const.k_23 * dA_2 - const.k_32 * dA_3
-        d2A_4 = d2A_2 / const.V_c
-        d2DHT = const.k_out * const.DHT_ss * const.FAR_2 * dS5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * dS5AR1 - const.k_out * dDHT
-        d2S5AR1 = -const.k_1 * dS5AR1 - const.ko_1 * (A_4 * dS5AR1 + dA_4 * S5AR1)
-        d2S5AR2 = -const.k_2 * dS5AR2 - const.ko_2 * (A_4 * dS5AR2 + dA_4 * S5AR2)
-        
         A_1 += dA_1 * dt
         A_2 += dA_2 * dt
         A_3 += dA_3 * dt
@@ -269,6 +103,14 @@ def predictNextCompartmentValues(comp, const, useSecondOrder):
         S5AR2 += dS5AR2 * dt
         
         if useSecondOrder:
+            d2A_1 = -const.k_a * dA_1
+            d2A_2 = const.k_a * dA_1 - k23k20 * dA_2 + const.k_32 * dA_3 - const.V_max * (vckma2 * dA_2 - A_2 * dA_2) / (vckma2 ** 2)
+            d2A_3 = const.k_23 * dA_2 - const.k_32 * dA_3
+            d2A_4 = d2A_2 / const.V_c
+            d2DHT = const.k_out * const.DHT_ss * const.FAR_2 * dS5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * dS5AR1 - const.k_out * dDHT
+            d2S5AR1 = -const.k_1 * dS5AR1 - const.ko_1 * (A_4 * dS5AR1 + dA_4 * S5AR1)
+            d2S5AR2 = -const.k_2 * dS5AR2 - const.ko_2 * (A_4 * dS5AR2 + dA_4 * S5AR2)
+            
             A_1 += d2A_1 * dt2
             A_2 += d2A_2 * dt2
             A_3 += d2A_3 * dt2
@@ -292,21 +134,17 @@ def scalpDHTReduction(comp):
     c = comp.A_3
     return 0.358 * (1 - c / (68.515 + c)) + 0.642 * (1 - c / (27397.306 + c))
     
-def simulate(dt, schedule, resTime):   
+def simulate(dt, resTime, schedule):   
     const = Constants(dt)
     comp = Compartments(const)
     
-    numSteps = int(schedule.totalRunTime / dt)
+    numSteps = int(schedule.totalRunTime() / dt)
     time = 0
     sampleTime = resTime
-    indices = None
     data = SimulationData()
     for i in range(numSteps):
-        newIndices = schedule.indices(time)
-        if newIndices != indices:
-            comp.administer(schedule.doseAt(newIndices))
-        indices = newIndices
-        if time > schedule.totalRunTime:
+        comp.administer(schedule.doseAt(time))
+        if time > schedule.totalRunTime():
             break
         
         while sampleTime >= resTime:
@@ -320,10 +158,235 @@ def simulate(dt, schedule, resTime):
         sampleTime += dt
         
     data.numSamples = len(data.ySerumDut)
-    data.totalSimTime = schedule.totalRunTime
+    data.totalSimTime = schedule.totalRunTime()
     
     return data
 
+class ScheduleException(Exception):
+    pass
+
+class Schedule:
+    def __init__(self, string):
+        string = ''.join(string.split())
+        if not string:
+            raise ScheduleException('Error: No schedule entered.')
+        bracketDepth = 0
+        for ch in string:
+            if ch == '[':
+                bracketDepth += 1
+            elif ch == ']':
+                bracketDepth -= 1
+            if bracketDepth < 0:
+                break
+        if bracketDepth != 0:
+            raise ScheduleException('Error: Mismatched brackets in schedule string.')
+        self.rootItem = ScheduleItem(string)
+        self.currentIndex = None
+        
+    def doseAt(self, t):
+        doseIndex = self.rootItem.itemAt(t)
+        if doseIndex is None:
+            self.currentIndex = None
+            return 0
+        dose, index = doseIndex
+        if index != self.currentIndex:
+            self.currentIndex = index
+            return dose
+        return 0
+            
+    def totalRunTime(self):
+        return self.rootItem.duration
+
+class ScheduleItem:
+    daysOfWeek = dict(zip(['Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa'], range(7)))
+    
+    def printItem(self, tabs=''):
+        if self.items:
+            print(tabs + 'SI(')
+            for item in self.items:
+                item.printItem(tabs + '    ')
+            print(tabs + str(self.dose) + 'mg, ' + str(self.duration) + 'h),')
+        else:
+            print(tabs + 'SI(' + str(self.dose) + 'mg, ' + str(self.duration) + 'h),')
+            
+
+    def __init__(self, string1, string2=None, itemType=None):
+        self.items = []
+        self.dose = -1
+        self.duration = -1
+        self.totalDuration = 0
+        
+        if itemType == 0 or itemType == None:
+            commaStrings = self.commaSplit(string1)
+            i = 0
+            while i < len(commaStrings):
+                cs = commaStrings[i]
+                if cs[0] == '[':
+                    endBracketI = cs.rfind(']')
+                    if endBracketI + 1 < len(cs):
+                        if cs[endBracketI + 1] == 'x':
+                            if endBracketI + 2 < len(cs):
+                                self.items.append(ScheduleItem(cs[1:endBracketI], cs[endBracketI + 2:], 0))
+                            else:
+                                raise ScheduleException('Error: No duration provided after \'x\'.')
+                        else:
+                            raise ScheduleException('Error: Invalid character \'' + cs[endBracketI + 1] + '\' after closing bracket \']\'.')
+                    else:
+                        self.items.append(ScheduleItem(cs[1:endBracketI], None, 0))
+                elif i + 1 < len(commaStrings):
+                    cs2 = commaStrings[i + 1]
+                    if all(ch.isalpha() for ch in cs2):
+                        self.items.extend(ScheduleItem(cs, cs2, 2).items)
+                    elif all(ch.isalnum() or ch == '.' for ch in cs2):
+                        self.items.append(ScheduleItem(cs, cs2, 1))
+                    else:
+                        raise ScheduleException('Error: \'' + cs2 + '\' is not a valid duration or weekly schedule.')
+                    i += 1
+                else:
+                    self.items.append(ScheduleItem(cs, '1d', 1))
+                
+                i += 1
+            
+            if string2 is not None:
+                self.duration = self.parseTimeStringToHours(string2)
+        elif itemType == 1:
+            try:
+                self.dose = float(string1)
+            except Exception:
+                raise ScheduleException('Error: \'' + string1 + '\' is not a valid dose.')
+            if self.dose < 0:
+                raise ScheduleException('Error: Dose \'' + string1 + '\' is negative.')
+            self.duration = self.parseTimeStringToHours(string2)
+        elif itemType == 2:
+            weekday = ''
+            weekdays = []
+            for ch in string2:
+                if ch.isupper():
+                    if weekday:
+                        weekdays.append(weekday)
+                    weekday = ''
+                weekday += ch
+            if weekday:
+                weekdays.append(weekday)
+            weekdaysBool = [False] * 7
+            for wd in weekdays:
+                if wd not in self.daysOfWeek:
+                    raise ScheduleException('Error: \'' + wd + '\' is not a valid day of the week.')
+                weekdaysBool[self.daysOfWeek[wd]] = True
+                
+            wait = 0
+            index = weekdaysBool.index(True)
+            index = (index + 1) % 7
+            for i in range(7):
+                wait += 1
+                if weekdaysBool[index]:
+                    self.items.append(ScheduleItem(string1, str(wait) + 'd', 1))
+                    wait = 0
+                index += 1
+                if index == 7:
+                    index = 0
+        
+        if self.dose == -1:
+            self.dose = 0
+            for item in self.items:
+                self.dose += item.dose
+            
+        for item in self.items:
+            self.totalDuration += item.duration
+            
+        if self.duration == -1:
+            self.duration = self.totalDuration
+                
+        if self.duration == 0:
+            self.duration = 1
+                
+        if len(self.items) == 1 and self.duration <= self.items[0].duration:
+            self.totalDuration = self.items[0].totalDuration
+            self.items = self.items[0].items
+            
+        itemI = 0
+        while itemI < len(self.items):
+            item = self.items[itemI]
+            if len(item.items) > 0 and item.duration == item.totalDuration:
+                itemsToInsert = item.items
+                self.items = self.items[:itemI] + itemsToInsert + self.items[itemI + 1:]
+                itemI += len(itemsToInsert) - 1
+            itemI += 1
+        
+    def commaSplit(self, string):
+        splitList = []
+        
+        bracketDepth = 0
+        i1 = 0
+        i2 = 0
+        for ch in string:
+            if ch == '[':
+                bracketDepth += 1
+            elif ch == ']':
+                bracketDepth -= 1
+            elif ch == ',' and bracketDepth == 0:
+                if i2 - i1 > 0:
+                    splitList.append(string[i1:i2])
+                i1 = i2 + 1
+            i2 += 1
+            
+        if i2 == len(string) and i2 - i1 > 0:
+            splitList.append(string[i1:i2])
+                
+            
+        return splitList
+        
+    def parseTimeStringToHours(self, string):
+        endI = len(string)
+        for i in range(len(string)):
+            ch = string[i]
+            if not (ch.isdigit() or ch == '.'):
+                endI = i
+                break
+        number = 0
+        numStr = string[:endI]
+        try:
+            number = float(numStr)
+        except:
+            if numStr:
+                raise ScheduleException('Error: \'' + numStr + '\' is not a valid time duration.')
+            else:
+                raise ScheduleException('Error: \'' + string + '\' does not provide a time duration.')
+                
+        unit = string[endI:]
+        if unit == 'd' or unit == '':
+            return number * 24
+        elif unit == 'w':
+            return number * 7 * 24
+        elif unit == 'mo':
+            return number * 30 * 24
+        elif unit == 'y':
+            return number * 365 * 24
+        elif unit == 'h':
+            return number
+        else:
+            raise ScheduleException('Error: \'' + unit + '\' is not a valid time unit.')
+            
+    def itemAt(self, t):
+        if t < 0 or t >= self.duration:
+            return None
+            
+        if len(self.items) == 0:
+            return self.dose, []
+            
+        loops = math.floor(t / self.totalDuration)
+        t %= self.totalDuration
+        
+        i = 0
+        startT = 0
+        for item in self.items:
+            if t < startT + item.duration:
+                dose, indices = item.itemAt(t - startT)
+                return dose, [loops * len(self.items) + i] + indices
+            i += 1
+            startT += item.duration
+            
+        return None
     
 while True:
     print('Enter a dosing schedule. Dosing schedule format examples:\n')
@@ -340,14 +403,18 @@ while True:
     inp = input('Your dosing schedule: ')
     if ''.join(inp.lower().split()) == 'q':
         break
-    schedule = Schedule(inp)
-    if len(schedule.dosingPattern) == 0:
-        print('Not valid dosing schedule syntax. Press enter to try again.')
-        input()
+    schedule = None
+    try:
+        schedule = Schedule(inp)
+    except ScheduleException as se:
+        print()
+        print(se)
+        print()
+        input('Press enter to try again: ')
         print()
         continue
     
-    simData = simulate(0.01, schedule, 0.01)
+    simData = simulate(0.01, 0.01, schedule)
         
     x = np.linspace(0, simData.totalSimTime / 24, simData.numSamples)
     ySerumDut = np.array(simData.ySerumDut)
