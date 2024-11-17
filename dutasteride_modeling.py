@@ -94,6 +94,15 @@ def predictNextCompartmentValues(comp, const, useSecondOrder):
         dS5AR1 = const.k_1 - const.k_1 * S5AR1 - const.ko_1 * A_4 * S5AR1
         dS5AR2 = const.k_2 - const.k_2 * S5AR2 - const.ko_2 * A_4 * S5AR2
         
+        if useSecondOrder:
+            d2A_1 = -const.k_a * dA_1
+            d2A_2 = const.k_a * dA_1 - k23k20 * dA_2 + const.k_32 * dA_3 - const.V_max * (vckma2 * dA_2 - A_2 * dA_2) / (vckma2 ** 2)
+            d2A_3 = const.k_23 * dA_2 - const.k_32 * dA_3
+            d2A_4 = d2A_2 / const.V_c
+            d2DHT = const.k_out * const.DHT_ss * const.FAR_2 * dS5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * dS5AR1 - const.k_out * dDHT
+            d2S5AR1 = -const.k_1 * dS5AR1 - const.ko_1 * (A_4 * dS5AR1 + dA_4 * S5AR1)
+            d2S5AR2 = -const.k_2 * dS5AR2 - const.ko_2 * (A_4 * dS5AR2 + dA_4 * S5AR2)
+        
         A_1 += dA_1 * dt
         A_2 += dA_2 * dt
         A_3 += dA_3 * dt
@@ -103,14 +112,6 @@ def predictNextCompartmentValues(comp, const, useSecondOrder):
         S5AR2 += dS5AR2 * dt
         
         if useSecondOrder:
-            d2A_1 = -const.k_a * dA_1
-            d2A_2 = const.k_a * dA_1 - k23k20 * dA_2 + const.k_32 * dA_3 - const.V_max * (vckma2 * dA_2 - A_2 * dA_2) / (vckma2 ** 2)
-            d2A_3 = const.k_23 * dA_2 - const.k_32 * dA_3
-            d2A_4 = d2A_2 / const.V_c
-            d2DHT = const.k_out * const.DHT_ss * const.FAR_2 * dS5AR2 + const.k_out * const.DHT_ss * (1 - const.FAR_2) * dS5AR1 - const.k_out * dDHT
-            d2S5AR1 = -const.k_1 * dS5AR1 - const.ko_1 * (A_4 * dS5AR1 + dA_4 * S5AR1)
-            d2S5AR2 = -const.k_2 * dS5AR2 - const.ko_2 * (A_4 * dS5AR2 + dA_4 * S5AR2)
-            
             A_1 += d2A_1 * dt2
             A_2 += d2A_2 * dt2
             A_3 += d2A_3 * dt2
