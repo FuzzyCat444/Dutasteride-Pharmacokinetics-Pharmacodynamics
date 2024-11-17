@@ -62,8 +62,8 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 ### [0.5, 1d] x 1mo, [1, 1d] x 1mo, [1.5, 1d] x 1mo, [2, 1d] x 1mo - taking 0.5 mg/day for a month, then 1 mg/day for a month, then 1.5 mg/day for a month, then 2 mg/day for a month:
 ![screenshot 3](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/%5B0.5,%201d%5D%20x%201mo,%20%5B1,%201d%5D%20x%201mo,%20%5B1.5,%201d%5D%20x%201mo,%20%5B2,%201d%5D%20x%201mo.png?raw=true)
 
-### [0.5, 1d] x 6mo, [0, 1d] x 6mo - taking 0.5 mg/day for 6 months, then stopping for 6 months:
+### [0.5, 1d] x 6mo, [] x 6mo - taking 0.5 mg/day for 6 months, then stopping for 6 months:
 ![screenshot 4](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/%5B0.5,%201d%5D%20x%206mo,%20%5B0,%201d%5D%20x%206mo.png?raw=true)
 
-### [2.5, 1d] x 6mo, [0, 1d] x 6mo - taking 2.5 mg/day for 6 months, then stopping for 6 months:
+### [2.5, 1d] x 6mo, [] x 6mo - taking 2.5 mg/day for 6 months, then stopping for 6 months:
 ![screenshot 5](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/%5B2.5,%201d%5D%20x%206mo,%20%5B0,%201d%5D%20x%206mo.png?raw=true)
