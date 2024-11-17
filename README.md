@@ -32,7 +32,7 @@ Dosing schedules are entered into the console when the program is running. Once 
 
 ### Format Examples:
 
-Note: Time units can be any of: h, d, w, mo, y (hours, days, weeks, months, years). No unit provided = days.
+Note: Time units can be any of: h, d, w, mo, y (hours, days, weeks, months, years). No unit provided = days. Schedules may be nested as deeply as needed using brackets to create complex regimens.
 
 | Schedule        | Explanation           |
 | ------------- | ------------- |
