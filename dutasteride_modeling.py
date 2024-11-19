@@ -213,7 +213,7 @@ class ScheduleItem:
 
     def __init__(self, string1, string2=None, itemType=None):
         self.items = []
-        self.dose = -1
+        self.dose = 0
         self.duration = -1
         self.totalDuration = 0
         
@@ -237,7 +237,7 @@ class ScheduleItem:
                 elif i + 1 < len(commaStrings):
                     cs2 = commaStrings[i + 1]
                     if all(ch.isalpha() for ch in cs2):
-                        self.items.extend(ScheduleItem(cs, cs2, 2).items)
+                        self.items.append(ScheduleItem(cs, cs2, 2))
                     elif all(ch.isalnum() or ch == '.' for ch in cs2):
                         self.items.append(ScheduleItem(cs, cs2, 1))
                     else:
@@ -274,23 +274,21 @@ class ScheduleItem:
                 if wd not in self.daysOfWeek:
                     raise ScheduleException('Error: \'' + wd + '\' is not a valid day of the week.')
                 weekdaysBool[self.daysOfWeek[wd]] = True
-                
             wait = 0
-            index = weekdaysBool.index(True)
-            index = (index + 1) % 7
-            for i in range(7):
-                wait += 1
-                if weekdaysBool[index]:
-                    self.items.append(ScheduleItem(string1, str(wait) + 'd', 1))
+            i = 0
+            dosing = False
+            while True:
+                if i == 7 or weekdaysBool[i]:
+                    if dosing:
+                        self.items.append(ScheduleItem(string1, str(wait) + 'd', 1))
+                    elif wait > 0:
+                        self.items.append(ScheduleItem('0', str(wait) + 'd', 1))
+                    dosing = True
                     wait = 0
-                index += 1
-                if index == 7:
-                    index = 0
-        
-        if self.dose == -1:
-            self.dose = 0
-            for item in self.items:
-                self.dose += item.dose
+                if i == 7:
+                    break
+                wait += 1
+                i += 1
             
         for item in self.items:
             self.totalDuration += item.duration
@@ -303,8 +301,9 @@ class ScheduleItem:
                 
         if len(self.items) == 1 and self.duration <= self.items[0].duration:
             self.totalDuration = self.items[0].totalDuration
+            self.dose = self.items[0].dose
             self.items = self.items[0].items
-            
+        
         itemI = 0
         while itemI < len(self.items):
             item = self.items[itemI]
@@ -349,10 +348,7 @@ class ScheduleItem:
         try:
             number = float(numStr)
         except:
-            if numStr:
-                raise ScheduleException('Error: \'' + numStr + '\' is not a valid time duration.')
-            else:
-                raise ScheduleException('Error: \'' + string + '\' does not provide a time duration.')
+            raise ScheduleException('Error: ' + numStr + ' is not a valid time duration.')
                 
         unit = string[endI:]
         if unit == 'd' or unit == '':
@@ -366,7 +362,7 @@ class ScheduleItem:
         elif unit == 'h':
             return number
         else:
-            raise ScheduleException('Error: \'' + unit + '\' is not a valid time unit.')
+            raise ScheduleException('Error: ' + unit + ' is not a valid time unit.')
             
     def itemAt(self, t):
         if t < 0 or t >= self.duration:
