@@ -54,6 +54,8 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 
 # Screenshots:
 
+Note: Downsampling of the plot makes the serum dutasteride look more irregular than it is.
+
 ### Blood absorption curve after 0.5 mg administration
 ![screenshot 5](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/screenshot5.png?raw=true)
 
