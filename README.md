@@ -54,10 +54,13 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 
 # Screenshots:
 
+### Blood absorption curve after 0.5 mg administration
+![screenshot 5](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/screenshot5.png?raw=true)
+
 ### [0.5, 1d] x 90d - taking 0.5 mg daily for 90 days:
 ![screenshot 1](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/screenshot1.png?raw=true)
 
-### 0.5, M, 0.5, MTh, 0.5, MWF, 0.5, MTuWF, 0.5, MTuWThF, [0.5, 1d] x 6d, [] x 1d, [0.5, 1d] x 6mo - adding one 0.5 mg dose per week until reaching 0.5 mg/day:
+### 0.5, M, 0.5, MTh, 0.5, MWF, 0.5, MTuWF, 0.5, MTuWThF, 0.5, SuMTuWThF, [0.5, 1d] x 6mo - adding one 0.5 mg dose per week until reaching 0.5 mg/day:
 ![screenshot 2](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/screenshot2.png?raw=true)
 
 ### [2.5, 1d] x 6mo, [] x 6mo - taking 2.5 mg/day for a month, then stopping:
