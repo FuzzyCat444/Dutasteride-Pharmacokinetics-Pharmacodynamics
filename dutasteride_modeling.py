@@ -348,7 +348,10 @@ class ScheduleItem:
         try:
             number = float(numStr)
         except:
-            raise ScheduleException('Error: ' + numStr + ' is not a valid time duration.')
+            if numStr:
+                raise ScheduleException('Error: \'' + numStr + '\' is not a valid time duration.')
+            else:
+                raise ScheduleException('Error: \'' + string + '\' does not provide a time duration.')
                 
         unit = string[endI:]
         if unit == 'd' or unit == '':
@@ -362,7 +365,7 @@ class ScheduleItem:
         elif unit == 'h':
             return number
         else:
-            raise ScheduleException('Error: ' + unit + ' is not a valid time unit.')
+            raise ScheduleException('Error: \'' + unit + '\' is not a valid time unit.')
             
     def itemAt(self, t):
         if t < 0 or t >= self.duration:
