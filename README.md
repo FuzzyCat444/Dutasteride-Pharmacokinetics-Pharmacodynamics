@@ -74,6 +74,23 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 | ko<sub>1G</sub> | = | 0.000594 |
 | ko<sub>2G</sub> | = | 0.0357 |
 
+
+|       *Daily* Dose (mg)          |   |        Scalp DHT Reduction (%)          |
+| --------------- | - | -------------------- |
+| 0.1 | = | 32% (known) |
+| 0.5 | = | 51% (known) |
+| 2.5 | = | 79% (known) |
+| 1 | = | 63% |
+| 1.5 | = | 70% |
+| 2 | = | 75% |
+| 3 | = | 82% |
+| 5 | = | 88% |
+| 10 | = | 93% |
+| 15 | = | 95.4% |
+| 20 | = | 96.5% |
+| 30 | = | 97.6% |
+| 40 | = | 98.2% |
+
 # Screenshots:
 
 Note: Downsampling of the plot makes the serum dutasteride look more irregular than it is.
