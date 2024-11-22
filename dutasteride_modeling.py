@@ -129,11 +129,18 @@ def predictNextCompartmentValues(comp, const, useSecondOrder):
     comp.S5AR2 = S5AR2
     
     comp.DHTp = 100 * (1 - comp.DHT / const.DHT_ss)
-    comp.scalpDHTp = 100 * (1 - scalpDHTReduction(comp))
+    comp.scalpDHTp = 100 * (1 - scalpDHTReduction(comp.A_3))
         
-def scalpDHTReduction(comp):
-    c = comp.A_3
+def scalpDHTReduction(A_3):
+    c = A_3
     return 0.358 * (1 - c / (68.235 + c)) + 0.642 * (1 - c / (27614.478 + c))
+    
+def A_3_steadyState(const, dose):
+    d = dose * 1000 / 24
+    return const.k_23 / const.k_32 * (-(d - const.k_20 * const.K_m * const.V_c - const.V_max) - math.sqrt((d - const.k_20 * const.K_m * const.V_c - const.V_max) ** 2 + 4 * const.k_20 * const.K_m * const.V_c * d)) / (-2 * const.k_20)
+    
+def scalpDHTReductionSteadyState(const, dose):
+    return scalpDHTReduction(A_3_steadyState(const, dose))
     
 def simulate(dt, resTime, schedule):   
     const = Constants(dt)
