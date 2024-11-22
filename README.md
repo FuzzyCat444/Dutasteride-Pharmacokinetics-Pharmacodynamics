@@ -52,6 +52,44 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 | --------------- | - | -------------------- |- | -------------------- |
 | [0.5, 1d] x 6mo | = | [0.125, 6h] x 6mo |  = | [0.02083, 1h] x 6mo |
 
+# Serum DHT Prediction at Steady State:
+
+[Visit the desmos page for serum DHT suppression predictions based on *daily* dose](https://www.desmos.com/calculator/xgebord2qz). S(D) predicts serum DHT suppression at steady state, given dose D in milligrams per day:
+
+![serum DHT](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/serum_dht.PNG?raw=true)
+
+<table>
+<tr><th>Variables </th><th>Serum DHT Suppression Predictions</th></tr>
+<tr><td>
+
+|       Variable:          |   |         Values             |
+| --------------- | - | -------------------- |
+| k<sub>23</sub> | = | 0.1936 |
+| k<sub>32</sub> | = | 0.09911 |
+| k<sub>20</sub> | = | 0.00337 |
+| K<sub>m</sub> | = | 0.957 |
+| V<sub>c</sub> | = | 173 |
+| V<sub>max</sub> | = | 5.91 |
+| FAR<sub>2</sub> | = | 0.827 |
+| k<sub>1</sub> | = | 0.0153 |
+| k<sub>2</sub> | = | 0.00871 |
+| ko<sub>1G</sub> | = | 0.000594 |
+| ko<sub>2G</sub> | = | 0.0357 |
+
+</td><td>
+
+|       *Daily* Dose (mg)          |   |        Serum DHT Reduction (%)          |
+| --------------- | - | -------------------- |
+| 0.1 | = | 70% |
+| 0.5 | = | 90% |
+| 1 | = | 94.6% |
+| 1.5 | = | 96.2% |
+| 2 | = | 97% |
+| 2.5 | = | 97.6% |
+| 5 | = | 98.7% |
+| 10 | = | 99.4% |
+
+</td></tr></table>
 
 # Scalp DHT Prediction at Steady State:
 
