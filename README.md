@@ -52,6 +52,28 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 | --------------- | - | -------------------- |- | -------------------- |
 | [0.5, 1d] x 6mo | = | [0.125, 6h] x 6mo |  = | [0.02083, 1h] x 6mo |
 
+
+# Scalp DHT Prediction at Steady State:
+
+[Visit the desmos page for scalp DHT suppression predictions based on *daily* dose](https://www.desmos.com/calculator/y0comobcij). S(D) predicts scalp DHT suppression at steady state, given dose D in milligrams per day:
+
+![scalp DHT](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/scalp_dht.PNG?raw=true)
+
+
+|       Where:          |   |                      |
+| --------------- | - | -------------------- |
+| k<sub>23</sub> | = | 0.1936 |
+| k<sub>32</sub> | = | 0.09911 |
+| k<sub>20</sub> | = | 0.00337 |
+| K<sub>m</sub> | = | 0.957 |
+| V<sub>c</sub> | = | 173 |
+| V<sub>max</sub> | = | 5.91 |
+| FAR<sub>2</sub> | = | 0.358 |
+| k<sub>1</sub> | = | 16.403 |
+| k<sub>2</sub> | = | 2.436 |
+| ko<sub>1G</sub> | = | 0.000594 |
+| ko<sub>2G</sub> | = | 0.0357 |
+
 # Screenshots:
 
 Note: Downsampling of the plot makes the serum dutasteride look more irregular than it is.
