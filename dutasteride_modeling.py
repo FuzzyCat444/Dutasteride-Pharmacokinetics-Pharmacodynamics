@@ -133,7 +133,7 @@ def predictNextCompartmentValues(comp, const, useSecondOrder):
         
 def scalpDHTReduction(comp):
     c = comp.A_3
-    return 0.358 * (1 - c / (68.515 + c)) + 0.642 * (1 - c / (27397.306 + c))
+    return 0.358 * (1 - c / (68.235 + c)) + 0.642 * (1 - c / (27614.478 + c))
     
 def simulate(dt, resTime, schedule):   
     const = Constants(dt)
