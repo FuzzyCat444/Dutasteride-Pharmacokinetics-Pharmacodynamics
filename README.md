@@ -59,8 +59,11 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 
 ![scalp DHT](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/scalp_dht.PNG?raw=true)
 
+<table>
+<tr><th>Variables </th><th>Scalp DHT Suppression Predictions</th></tr>
+<tr><td>
 
-|       Where:          |   |                      |
+|       Variable:          |   |         Values             |
 | --------------- | - | -------------------- |
 | k<sub>23</sub> | = | 0.1936 |
 | k<sub>32</sub> | = | 0.09911 |
@@ -74,6 +77,7 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 | ko<sub>1G</sub> | = | 0.000594 |
 | ko<sub>2G</sub> | = | 0.0357 |
 
+</td><td>
 
 |       *Daily* Dose (mg)          |   |        Scalp DHT Reduction (%)          |
 | --------------- | - | -------------------- |
@@ -90,6 +94,8 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 | 20 | = | 96.5% |
 | 30 | = | 97.6% |
 | 40 | = | 98.2% |
+
+</td></tr></table>
 
 # Screenshots:
 
