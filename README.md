@@ -54,7 +54,7 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 
 # Serum DHT Prediction at Steady State:
 
-[Visit the desmos page for serum DHT suppression predictions based on *daily* dose](https://www.desmos.com/calculator/xgebord2qz). S(D) predicts serum DHT suppression at steady state, given dose D in milligrams per day:
+[Visit the desmos page for serum DHT suppression predictions based on *daily* dose](https://www.desmos.com/calculator/z0n0t8qwnm). S(D) predicts serum DHT suppression at steady state, given dose D in milligrams per day:
 
 ![serum DHT](https://github.com/FuzzyCat444/Dutasteride-Pharmacokinetics-Pharmacodynamics/blob/main/screenshots/serum_dht.PNG?raw=true)
 
