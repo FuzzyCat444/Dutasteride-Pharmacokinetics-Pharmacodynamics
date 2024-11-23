@@ -62,10 +62,8 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 <tr><th>Variables </th><th>Serum DHT Suppression Predictions</th></tr>
 <tr><td>
 
-|       Variable:          |   |         Values             |
+|       Variable          |   |         Value             |
 | --------------- | - | -------------------- |
-| k<sub>23</sub> | = | 0.1936 |
-| k<sub>32</sub> | = | 0.09911 |
 | k<sub>20</sub> | = | 0.00337 |
 | K<sub>m</sub> | = | 0.957 |
 | V<sub>c</sub> | = | 173 |
@@ -101,7 +99,7 @@ If you want a smoother graph, you can simply choose an equivalent dose but with 
 <tr><th>Variables </th><th>Scalp DHT Suppression Predictions</th></tr>
 <tr><td>
 
-|       Variable:          |   |         Values             |
+|       Variable          |   |         Value             |
 | --------------- | - | -------------------- |
 | k<sub>23</sub> | = | 0.1936 |
 | k<sub>32</sub> | = | 0.09911 |
